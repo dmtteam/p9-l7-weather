@@ -17,7 +17,7 @@ class WeatherForecast:
         self.key = str(sys.argv[1])
 
     def get_data(self):
-# ###print("get dates")
+# print("get dates")
         url = "https://weatherbit-v1-mashape.p.rapidapi.com/forecast/daily"
         querystring = {"lon": "18.48", "lat": "54.36"}
         # with open("string.txt", "r") as f:
@@ -31,7 +31,7 @@ class WeatherForecast:
         if datetime.now() < max_date:
             with open("out2.txt", "r") as f:
                 file_data = f.read()
-# ##print("self-dane-0")
+# print("self-dane-0")
                 self.dane = json.loads(file_data)
         else:
             headers = {
@@ -41,7 +41,7 @@ class WeatherForecast:
             response = requests.request("GET", url, headers=headers, params=querystring)
             with open("out2.txt", "w", encoding="UTF-8") as f:
                 f.write(response.text)
-# ##print("self-dane-1")
+# print("self-dane-1")
                 self.dane = response.json()
 
     def __getitem__(self, item):            # w item data
@@ -51,13 +51,13 @@ class WeatherForecast:
     def weather_check(self):
         if not self.dane:
             self.get_data()
-# ##print("wethercheck")
+# print("inside weather_check")
         if len(sys.argv) > 2:
             check_date = sys.argv[2]
         else:
             NextDay_Date = date.today() + timedelta(days=1)
             check_date = NextDay_Date.strftime("%Y-%m-%d")
-# ##print(NextDay_Date.strftime("%Y-%m-%d"))
+# print(NextDay_Date.strftime("%Y-%m-%d"))
         for day in self.dane["data"]:
             date2 = day["valid_date"]
             velessa = day["weather"]["description"]
@@ -78,12 +78,12 @@ class WeatherForecast:
         else:
            return "Nie bedzie padac"
 
-    def items(self):                        # ma zwrocic generator tupli
-# ##print(self.dane["data"])
+    def items(self):
+# print(self.dane["data"])
         for item in self.dane["data"]:
 # print(item["valid_date"])
-# ## print(self.item_na_prognoze(item))
-#for items in self.dane: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# print(self.item_na_prognoze(item))
+# for items in self.dane: !
             yield item["valid_date"], self.item_na_prognoze(item)
 
     def __iter__(self):
@@ -94,27 +94,17 @@ class WeatherForecast:
     def __next__(self):
         pass
 
-
-# 1. pogoda dla podanej daty
+# 1. The weather for the given date
 wf = WeatherForecast(sys.argv[1])
 wf.weather_check()
 # print(wf[check_date])
 
-# 2 generator tupli w formacie (data, pogoda) dla już zcache’owanych rezultatów przy wywołaniu
+# 2. Tuple generator in (date, weather) format for already cached results
 """for x, y in wf.items():
     print(x,y)"""
 for z in wf.items():
     print(z)
 
-# wf to iterator zwracający wszystkie daty, dla których znana jest pogoda
-# printuje: "data"
-# city_name
-# lon
-# timezone
-# lat
-# country_code
-# state_code
-#printuje 1 kolumne 1 element json, powienien 2 kolumne 20 elem2.pnt czyli:
-for x in wf:
-    print(x)
-
+# 3. wf is an iterator that returns all dates for which the weather is known
+"""for x in wf:
+    print(x)"""
