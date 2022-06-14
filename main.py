@@ -6,10 +6,11 @@ from datetime import date
 import os
 import time
 
-string_from_terminal=str(sys.argv[1])
+string_from_terminal = str(sys.argv[1])
 
 url = "https://weatherbit-v1-mashape.p.rapidapi.com/forecast/daily"
 querystring = {"lon": "18.48", "lat": "54.36"}
+
 #with open("string.txt", "r") as f:
 #    string_from_txt = f.read().strip()
 
@@ -44,9 +45,9 @@ for day in dane["data"]:
     if date != check_date:
         continue
     if "Snow" in velessa or "snow" in velessa or "Rain" in velessa or "rain" in velessa:
-        print("Bedzie padac")
+        print("It's going to rain")
     else:
-        print("Nie bedzie padac")
+        print("It will not be raining")
     break
 else:
-    print("Nie wiem")
+    print("No idea!")
